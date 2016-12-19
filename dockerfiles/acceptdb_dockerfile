@@ -1,0 +1,14 @@
+FROM acceptdockerrep/accept_oracle11g_dump:latest
+
+ARG DB_NAME=XE
+
+ENV	TERM=xterm
+
+ENV ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe ORACLE_SID=$DB_NAME
+ENV SQLPLUS=$ORACLE_HOME/bin/sqlplus
+
+RUN \
+	apt-get update -y && \
+    apt-get install -y curl unzip nano sudo
+
+EXPOSE 1521 8080

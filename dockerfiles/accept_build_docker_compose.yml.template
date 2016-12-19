@@ -1,0 +1,26 @@
+version: '2'
+services:
+    accept-serv:
+        image: @@ACCEPT_IMG_NAME@@
+        restart: unless-stopped
+        ports: 
+            - "9001:8001"
+        links:
+            - oracle-serv
+        environment:
+            - DB_SERVER=accept-db-cnt
+            - DB_USERNAME=accept_service1
+            - DB_PASSWORD=accept
+        container_name: accept-cnt
+        tty: true
+    oracle-serv:
+        image: accept-oracle11g-data
+        restart: unless-stopped
+        ports:
+            - "1521"
+            - "8080"
+        environment:
+            - DB_SID=xe
+            - DB_USERNAME=accept_service1
+            - DB_PASSWORD=accept
+        container_name: accept-db-cnt

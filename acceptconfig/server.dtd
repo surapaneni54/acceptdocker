@@ -1,0 +1,94 @@
+<?xml encoding="UTF-8"?>
+
+<!-- set this "true" to enable reloading of web applications during development. Leave as "false" in production -->
+<!ENTITY contextReloadable "false">
+
+<!-- database connection -->
+
+<!--DB_20-->
+<!ENTITY jdbcDriverClassName "oracle.jdbc.OracleDriver">
+<!ENTITY h1_databaseUrl "jdbc:oracle:thin:@accept-db-cnt:1521/XE">
+<!--DB_END-->
+
+<!ENTITY h1_dbLoginName "accept_service1">
+<!ENTITY h1_dbPassword "accept">
+
+<!ENTITY defaultTransactionIsolation "READ_COMMITTED">
+<!ENTITY testOnBorrow  "true">
+<!ENTITY testOnReturn  "false">
+<!ENTITY testWhileIdle  "false">  <!-- change to false to disable DB connection keep alive -->
+<!ENTITY validationQuery "SELECT 1 FROM DUAL">  <!-- DB keep alive query -->
+<!ENTITY validationQueryTimeout "60">
+<!ENTITY removeAbandoned "true">
+<!ENTITY removeAbandonedTimeout "360">
+<!ENTITY logAbandoned "true">
+<!ENTITY connectionPoolMaxActive "30">  <!--  Increase value for a stand alone large instance -->
+<!ENTITY connectionPoolMaxIdle "10"> <!-- Increase value for a stand alone large instance  -->
+<!ENTITY connectionPoolMinIdle "5"> <!-- Increase value proportionate to above two values for a stand alone large instance  -->
+<!ENTITY initialSize "5"> <!-- Increase value proportionate to above values for a stand alone large instance  -->
+
+<!ENTITY AP_version "7.1" >   <!-- Accept 360 release version -->
+<!ENTITY Product_Type "RW50ZXJwcmlzZQ==" >   <!-- Accept 360 Product Type -->
+
+<!ENTITY h1_hostName    "localhost">    <!-- The name of the first host deployed on this server -->
+<!ENTITY h1_mainLoginUrl "http://localhost:9001"> <!-- The URL of the application login page, Used in e-mail links. -->
+<!ENTITY h1_plannerUrlBase  "http://localhost:9001">    <!-- Used for SOAP communication between the HTML application and the main application -->
+
+<!ENTITY docbaseRoot "/accept" >    <!-- Path to the folder containing the web applications code. An absolute path or a relative path starts from CATALINA_HOME/webapps -->
+<!ENTITY codeRootPath "/accept">       <!-- Path to the folder containing configuration files (such as properties). An absolute path or a relative path starts from the Java execution directory  -->
+
+<!ENTITY h1_contentManagementWebappDocBase "/accept/Accept_content"> <!-- Path to the content management web application -->
+<!ENTITY h1_propertiesBasePath "/custom_properties/">
+
+<!ENTITY h1_jasperServerUrl "{JASPER_SERVER_URL}"> <!-- Base url of the Jasper server including app name -->
+<!ENTITY h1_jasperReportingInsatnce "{JASPER_INSTANCE_NAME}"> <!-- The organization name of the Jasper server -->
+<!ENTITY h1_jasperReportingAdminUsername "{JASPER_ADMIN_USERNAME}"> <!-- The Admin Username of the Jasper server -->
+<!ENTITY h1_jasperReportingAdminPassword "{JASPER_ADMIN_PASSWORD}"> <!-- The Admin Password of the Jasper server -->
+
+<!ENTITY h1_reportingBaseUrl "{REPORT_BASE_URL}">  <!-- Base URL of the reporting server, without / at the end -->
+
+<!ENTITY h1_customReportingBaseUrl "{CUSTOM_REPORT_BASE_URL}">
+<!ENTITY h1_customReportingUrl "{CUSTOM_REPORT_BASE_URL}/AcceptCustomReportGateWay.aspx">
+
+<!ENTITY h1_builtInReportingBaseUrl "{BUILT_IN_REPORT_BASE_URL}">
+<!ENTITY h1_builtInReportingUrl "{BUILT_IN_REPORT_BASE_URL}/AcceptCustomReportGateWay.aspx">
+
+
+<!ENTITY h1_adHocReportingInstance "{AD_HOC_INSTANCE}">
+<!ENTITY h1_adHocReportingDB "dbType={AD_HOC_DB_TYPE};dbUser={AD_HOC_DB_USER};dbPassword={AD_HOC_DB_PASSWORD};dbHost={AD_HOC_DB_HOST};dbPort={AD_HOC_DB_PORT};dbSid={AD_HOC_DB_SID};">
+<!ENTITY h1_adHocReportingDBID "1">
+<!ENTITY h1_adHocReportingName "{AD_HOC_REPORT_NAME}">
+<!ENTITY h1_adHocReportingBaseUrl "{AD_HOC_REPORT_BASE_URL}{AD_HOC_REPORT_NAME}">
+<!ENTITY h1_adHocReportingUrl "{AD_HOC_REPORT_BASE_URL}/{AD_HOC_REPORT_NAME}/AcceptLogiProxy.aspx">
+<!ENTITY h1_adHocReportingWSUrl "{AD_HOC_REPORT_BASE_URL}/{AD_HOC_REPORT_NAME}/AdHocProxyWS.asmx">
+
+<!ENTITY h1_supportSamlAuth "false">
+
+<!ENTITY port   "7001">  <!-- Server shutdown port -->
+<!ENTITY httpPort   "8001">  <!-- HTTP Application deployment port -->
+<!ENTITY acpHttpPort   "{ACP_HTTP_PORT}">  <!-- HTTP ACP Services listen port -->
+<!ENTITY httpsPort  "443"> <!-- HTTPS Application deployment port -->
+<!ENTITY address    "*">   <!-- IP address binding for this server. * will bind to all addresses -->
+<!ENTITY keystorePass   "changeit"> <!-- SSL certification keystore password -->
+<!ENTITY keystorePath   "{KEYSTORE_DIR}/{KEYSTORE_FILENAME}">   <!-- SSL certification store location -->
+<!ENTITY proxyPort  ""> <!-- change to 443 if deployed behind a reverse proxy that does the SSL -->
+<!ENTITY httpScheme "http">    <!-- change to https if deployed behind a reverse proxy that does the SSL -->
+
+<!ENTITY includePostDataInAccessLog "false">    <!-- change to true to add POST data to access logs, requires change to the access log valve element in server.xml  -->
+<!ENTITY UrlEncodeSoapInAccessLog   "true"> <!-- When true the message XML document will be encoded as a URL query parameter, useful for replaying log files -->
+
+<!-- * * * -->
+<!-- Normally, the entries below will not be changed -->
+
+<!-- Other peer servers -->
+<!ENTITY peerServerPlannerWebRoots  ""> <!-- Comma-delimited list of web roots for SOAP communication with other peer servers' planner applications. Each URI is in the form of 'http://{server location}:{server port}/planner{AP_version}'. -->
+
+<!-- Applications web paths -->
+<!ENTITY welcomePath "">    <!-- Welcome page web path -->
+<!ENTITY htmlInterfacePath "/accept_html">  <!-- HTML application web path -->
+<!ENTITY contentManagementWebappWebappPath "/content_management"> <!-- Content management web path -->
+
+<!-- Amazon Cloud S3 bukcket configurations -->
+<!ENTITY cloudS3BucketURL "{CLOUD_S3_BUCKET_URL}"> <!-- Amazon cloud S3 Bucket URL -->
+<!ENTITY cloudS3BucketPlannerURL "&cloudS3BucketURL;/{SKIN_ROOT_PATH}"> <!-- Amazon cloud S3 Bucket URL For skin -->
+

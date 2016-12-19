@@ -1,0 +1,77 @@
+FROM ubuntu
+
+RUN mkdir docker
+RUN mkdir docker/tmp
+RUN mkdir docker/bin
+RUN mkdir docker/lib
+RUN mkdir docker/logs
+RUN mkdir docker/tmp/acceptconfig
+RUN mkdir accept
+
+RUN apt-get update
+
+# Install w3m terminal, vim edit and unzip
+RUN apt-get install -y w3m curl unzip nano sudo vim wget netcat
+
+# Install Java
+RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections 
+RUN apt-get install -y software-properties-common 
+RUN add-apt-repository -y ppa:webupd8team/java 
+RUN apt-get update 
+RUN apt-get install -y oracle-java8-installer
+
+# Remove cached files
+RUN rm -rf /var/lib/apt/lists/* 
+RUN rm -rf /var/cache/oracle-jdk8-installer
+
+#Define build argument
+ARG JAVA_HOME=/usr/lib/jvm/java-8-oracle
+ARG ACCEPT_HOME=/accept
+ARG TOMCAT_DIR=apache-tomcat-8.0.24
+ARG DOCKER_HOME=/docker
+
+# Define commonly used variable
+ENV JAVA_HOME=/usr/lib/jvm/java-8-oracle
+ENV ACCEPT_HOME=/accept
+ENV TOMCAT_DIR=apache-tomcat-8.0.24
+ENV DOCKER_HOME=/docker
+
+# Define working directory.
+WORKDIR $ACCEPT_HOME
+
+# Preparing Accept Installer Directory and Environment 
+# acceptconfig folder contains files to be replaced in the installer Directory
+COPY acceptinstaller/. $DOCKER_HOME/tmp/.
+COPY acceptconfig/. $DOCKER_HOME/tmp/acceptconfig/.
+COPY lib/. $DOCKER_HOME/lib/.
+
+COPY bin/startacceptdocker.sh $DOCKER_HOME/bin/.
+COPY bin/testdbconnection.sh $DOCKER_HOME/bin/.
+
+RUN unzip $DOCKER_HOME/tmp/@@ACCEPT_ZIP@@ -d $ACCEPT_HOME
+
+RUN ACCEPT_VERSION=`awk -F: '/VERSION:/{print $2}' $ACCEPT_HOME/CONTENT/CONTENT  | xargs` 
+ENV ACCEPT_VERSION=$ACCEPT_VERSION
+
+RUN cp $JAVA_HOME/lib/tools.jar $ACCEPT_HOME/$TOMCAT_DIR/lib/tools.jar
+RUN cp $DOCKER_HOME/tmp/acceptconfig/server.dtd $ACCEPT_HOME/server.dtd
+RUN cp $DOCKER_HOME/tmp/acceptconfig/license.xml $ACCEPT_HOME/license.xml
+
+RUN mv $ACCEPT_HOME/$TOMCAT_DIR/conf/server.xml $ACCEPT_HOME/$TOMCAT_DIR/conf/server.xml.bkp
+
+RUN mv $ACCEPT_HOME/$TOMCAT_DIR/conf/web.xml $ACCEPT_HOME/$TOMCAT_DIR/conf/web.xml.bkp
+RUN cp $DOCKER_HOME/tmp/acceptconfig/web.xml $ACCEPT_HOME/$TOMCAT_DIR/conf/web.xml
+
+RUN sed 's/{ACCEPT_HOME}/$ACCEPT_HOME/g;s/{TOMCAT_DIR}/$TOMCAT_DIR/g;s/{JAVA_HOME}/$JAVA_HOME/g' $ACCEPT_HOME/startaccept.sh.template > $ACCEPT_HOME/startaccept.sh
+RUN sed 's/{{PATH_TO_DTD}}/accept/' $ACCEPT_HOME/$TOMCAT_DIR/conf/server.xml.bkp > $ACCEPT_HOME/$TOMCAT_DIR/conf/server.xml
+
+RUN chmod 777 $DOCKER_HOME/bin/startacceptdocker.sh
+RUN chmod 777 $DOCKER_HOME/bin/testdbconnection.sh
+RUN chmod 777 $ACCEPT_HOME/startaccept.sh
+RUN chmod +x $ACCEPT_HOME/$TOMCAT_DIR/bin/catalina.sh 
+
+# Expose 8001 to make accept container to listen on this at runtime
+EXPOSE 8001
+
+# Start Accept
+CMD ["/docker/bin/startacceptdocker.sh"]

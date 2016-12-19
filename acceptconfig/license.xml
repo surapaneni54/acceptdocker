@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<accept-licenses>
+    <product-group name="AcceptArtemisGroup" version="7.4">
+        <component country-code="Any"
+            distribution-number="ACP0-0000-74610"
+            expiration-date="05-01-2017" ip-address="Any"
+            key="LXV9AZF00L1DQ001D00000" license-type="Enterprise"
+            licensee="Nokia" memory-limit="0" name="Accept"
+            os-code="All" session-limit="Unlimited" session-operand="reset"/>
+    </product-group>
+</accept-licenses>

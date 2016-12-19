@@ -1,0 +1,1 @@
+set DOCKER_DEV_HOME=..

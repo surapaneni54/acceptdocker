@@ -1,0 +1,39 @@
+FROM acceptdockerrep/@@ACCEPT_IMG_NAME@@
+
+RUN apt-get update
+
+# Install w3m terminal, vim edit and unzip
+RUN apt-get install -y w3m curl unzip nano sudo vim wget netcat
+
+# Install Java
+RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections 
+RUN apt-get install -y software-properties-common 
+RUN add-apt-repository -y ppa:webupd8team/java 
+RUN apt-get update 
+RUN apt-get install -y oracle-java8-installer
+
+# Remove cached files
+RUN rm -rf /var/lib/apt/lists/* 
+RUN rm -rf /var/cache/oracle-jdk8-installer
+
+# Define commonly used variable
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+ENV ACCEPT_HOME=/accept
+ENV TOMCAT_DIR=apache-tomcat-8.0.24
+
+# Define working directory.
+WORKDIR $ACCEPT_HOME
+
+RUN chmod 777 /docker/bin/startacceptdocker.sh
+RUN chmod 777 $ACCEPT_HOME/startaccept.sh
+RUN chmod 777 /docker/bin/testdbconnection.sh
+RUN chmod +x $ACCEPT_HOME/$TOMCAT_DIR/bin/catalina.sh 
+
+RUN ACCEPT_VERSION=`awk -F: '/VERSION:/{print $2}' $ACCEPT_HOME/CONTENT/CONTENT  | xargs` 
+ENV ACCEPT_VERSION=$ACCEPT_VERSION
+
+# Expose 8001 to make accept container to listen on this at runtime
+EXPOSE 8001
+
+# Start Accept
+CMD ["/docker/bin/startacceptdocker.sh"]
